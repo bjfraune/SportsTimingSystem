@@ -1,10 +1,22 @@
+import java.util.ArrayList;
 
-public interface ChronoTimer {
+public abstract class ChronoTimer {
 
-	public void power();
-	public void toggle(int channel);
-	public void trigger(int channel);
-	public void swap();
-	public void keypad(int number);
+	protected ArrayList<Racer> participants;
+	protected Time timer;
+
+	public static void power() {
+
+	}
+
+	public abstract void toggle(int channel);
+
+	public abstract void trigger(int channel);
+
+	public abstract void swap();
+
+	public static void keypad(int number) {
+
+	}
 
 }

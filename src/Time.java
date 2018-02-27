@@ -1,5 +1,5 @@
 import java.time.format.DateTimeFormatter;
-
+// NEED TO USE DATE API TO BUILD TIME CLASS
 public class Time {
 	private Time currentTime;
 	private final DateTimeFormatter formatTime=DateTimeFormatter.ofPattern("HH:mm:ss.SSS");;

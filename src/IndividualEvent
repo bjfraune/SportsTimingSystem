@@ -1,19 +1,20 @@
+import java.util.ArrayList;
 
-public class IndividualEvent implements ChronoTimer {
+public class IndividualEvent extends ChronoTimer {
 
-	public void power(){// TODO Auto-generated method stub
+	
+	public IndividualEvent(){
+		participants = new ArrayList<Racer>();
+		timer = new Time();
 	}
 
-	public void toggle(int channel){// TODO Auto-generated method stub
+	public void toggle(int channel) {
 	}
 
-	public void trigger(int channel){// TODO Auto-generated method stub
+	public void trigger(int channel) {
 	}
 
-	public void swap(){// TODO Auto-generated method stub
-	}
-
-	public void keypad(int number){// TODO Auto-generated method stub
+	public void swap() {
 	}
 
 }

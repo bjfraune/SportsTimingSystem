@@ -1,15 +1,15 @@
 import java.util.ArrayList;
 
-public abstract class ChronoTimer {
+public class ChronoTimer {
 
-	protected ArrayList<Racer> participants;
-	protected Time timer;
-	int ch1 = 1;
-	int ch2 = 2;
-	int ch3 = 3;
-	int ch4 = 4;
-
-	public static void power() {
+	private ArrayList<Racer> participants;
+	private Time timer;
+	int ch1 = 0,ch2 = 0,ch3 = 0,ch4 = 0;
+	public ChronoTimer(){
+		participants = new ArrayList<Racer>();
+		timer = new Time();
+	}
+	public void power() {
 		//Starts the clock
 
 	}
@@ -39,11 +39,11 @@ public abstract class ChronoTimer {
 		if (channel == 1)
 		{
 			//call printer with channel from here
-			start();
+		
 		}
 		else if (channel == 2)
 		{
-			finish();
+			
 		}
 	}
 
@@ -55,16 +55,6 @@ public abstract class ChronoTimer {
 
 	}
 	
-	public void start() {
-		//trigger on channel 1
-		//send current time to the printer
-		//print time /t trig ch#
-	}
-	
-	public void finish() {
-		//trigger on channel 2
-		//send current time to the printer
-	}
 
 	public void exit() {
 		//stop the time and exit the simulation?

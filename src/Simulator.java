@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 public class Simulator{
 	boolean simulatorOn = true;
+	ChronoTimer ct;
 	public Simulator(){
+		ct = new ChronoTimer();
 		Scanner s = new Scanner(System.in);
 		System.out.println("Read file from consol or file (c/f): ");
 		String input = s.next();
@@ -37,16 +39,16 @@ public class Simulator{
 	private void generalParser(String tokens[]) {
 		switch(tokens[1]){
 		case "POWER":
-			ChronoTimer.power();
+			ct.power();
 			break;
 		case "NEWRUN":
 			//TODO
 			break;
 		case "TOG":
-			ChronoTimer.toggle(Integer.parseInt(tokens[2]));
+			ct.toggle((tokens[2]));
 			break;
 		case "TRIG":
-			ChronoTimer.trigger(Integer.parseInt(tokens[2]));
+			
 			break;
 		case "PRINT":
 			//TODO

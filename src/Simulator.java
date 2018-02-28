@@ -1,11 +1,19 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Simulator{
-	boolean simulatorOn = true;
+	int racerCount; 
+	Time clock;
 	ChronoTimer ct;
+	boolean simulatorOn = true;
+	
+	/**
+	 * Constructor
+	 */
 	public Simulator(){
+		racerCount=1;
 		ct = new ChronoTimer();
 		Scanner s = new Scanner(System.in);
 		System.out.println("Read file from consol or file (c/f): ");
@@ -42,13 +50,15 @@ public class Simulator{
 			ct.power();
 			break;
 		case "NEWRUN":
-			//TODO
+			clock = new Time();
+			LocalTime t = LocalTime.now();
+			clock.setTime(t.getHour(), t.getMinute(), t.getSecond(), t.getNano());
 			break;
 		case "TOG":
-			ct.toggle((tokens[2]));
+			ct.toggle(tokens[2]);
 			break;
 		case "TRIG":
-			
+			ct.trigger(tokens[2]);
 			break;
 		case "PRINT":
 			//TODO
@@ -60,8 +70,10 @@ public class Simulator{
 			//tokens[2] to set time 
 			break;
 		case "NUM":
+			ct.setBib(tokens[2], racerCount++);
 			break;
 		case "EVENT":
+			ct.initiateNewEvent();
 			break;
 		case "EXIT":
 			simulatorOn = false;

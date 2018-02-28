@@ -2,13 +2,12 @@ import java.time.LocalTime;
 
 public class IndividualEvent {
 	Racer[] participants;
-	
 	public IndividualEvent(){
-		participants = new Racer[3];
+		participants = new Racer[5];
 	}
 	public void addRacer(String name){
 		int racerSlot = Integer.parseInt(name);
-		participants[racerSlot] = new Racer(name);
+		participants[racerSlot] = new Racer();
 	}
 
 	public void trigger(int channel, int racerslot, LocalTime time) {

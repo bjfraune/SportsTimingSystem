@@ -1,38 +1,28 @@
+import java.time.LocalTime;
+
 /**
  * @author bshepard Racers has 3 fields: name, startTime and endTime
  */
 public class Racer {
 
-	private String name;
-	private double startTime, endTime;
-
-	public Racer() {
-		this(null);
+	int bibNum;
+	LocalTime startTime, endTime;
+	
+	public Racer(){
+		startTime = endTime = null;
+	}
+	public void setBib(String name) {
+		this.bibNum = Integer.parseInt(name);	
 	}
 
-	public Racer(String name) {
-		this.name = name;
-		startTime = endTime = -1;
-	}
-
-	public void setName(String racername) {
-		name = racername;
-	}
-
-	public void startRace(double time) {
+	public void startRace(LocalTime time) {
 		startTime = time;
 	}
 
-	public void finishRace(double time) {
+	public void finishRace(LocalTime time) {
 		endTime = time;
 	}
 
-	public double timeResult() {
-		return endTime - startTime;
-	}
 
-	public String formattedResults() {
-		return name + " " + Double.toString(endTime - startTime);
-	}
 
 }

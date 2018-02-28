@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
  * Lets the user set a current time and retrieve updated time
  */
 public class Time {
-	private static LocalTime currentTime, userTime;
+	private LocalTime currentTime, userTime;
 	private final DateTimeFormatter formatTime=DateTimeFormatter.ofPattern("HH:mm:ss.SS");;
 	/**
 	 * Lets the user set a new local time

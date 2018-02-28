@@ -1,17 +1,33 @@
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-// NEED TO USE DATE API TO BUILD TIME CLASS
+/**
+ * @author BS
+ * Lets the user set a current time and retrieve updated time
+ */
 public class Time {
-	private Time currentTime;
-	private final DateTimeFormatter formatTime=DateTimeFormatter.ofPattern("HH:mm:ss.SSS");;
-	
-	public void setTime(Time time){
-		currentTime = time;
+	private static LocalTime currentTime, userTime;
+	private final DateTimeFormatter formatTime=DateTimeFormatter.ofPattern("HH:mm:ss.SS");;
+	/**
+	 * Lets the user set a new local time
+	 */
+	public void setTime(int hr, int min, int sec, int nanos){
+		userTime = LocalTime.of(hr, min, sec, nanos);
+		currentTime = LocalTime.now();
 	}
-	public Time getTime(){
-		return currentTime;
+	/**
+	 * @return a the local time(setTime must be called before you can get this time)
+	 */
+	public LocalTime getCurrentSetTime(){
+		if(userTime == null)return null;
+		return LocalTime.ofNanoOfDay((userTime.toNanoOfDay() + (LocalTime.now().toNanoOfDay() - currentTime.toNanoOfDay())));
 	}
-	public String time2formattedString(Time time){
-		return time.formatTime.toString();
+	/**
+	 * @param time
+	 * @return a string of the time in HH:mm:ss.SS format
+	 */
+	public String time2formattedString(LocalTime time){
+		if(time == null)return null;
+		return LocalTime.ofNanoOfDay((userTime.toNanoOfDay() + (LocalTime.now().toNanoOfDay() - currentTime.toNanoOfDay()))).format(formatTime).toString();
 	}
 	
 }

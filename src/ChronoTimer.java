@@ -4,8 +4,10 @@ public class ChronoTimer {
 
 	private ArrayList<Racer> participants;
 	private Time timer;
-	int ch1 = 0,ch2 = 0,ch3 = 0,ch4 = 0;
+	int channels []; 
+	Boolean ch1Bool = false;
 	public ChronoTimer(){
+		channels= new int[12];
 		participants = new ArrayList<Racer>();
 		timer = new Time();
 	}
@@ -31,7 +33,7 @@ public class ChronoTimer {
 		
 	}
 
-	public void toggle(int channel) {
+	public void toggle(String racerName) {
 		
 	}
 

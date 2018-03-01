@@ -1,3 +1,4 @@
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,10 +13,19 @@ import java.io.PrintWriter;
 public class Printer {
 	private PrintWriter printer;
 
-	/**Constructor for the printer. This method sets up everything we need for printing a receipt.txt file
+	/**Constructor for the printer. This method sets up everything we need for printing a receipt.txt file,
+	 * if the file exists it appends it instead of overwritting
 	 * @throws IOException
 	 */
 	public Printer() throws IOException {
+		printer = new PrintWriter(new FileOutputStream("Race_Printout.txt", true));
+	}
+	/**
+	 * This clears all existing data in the prinout file
+	 * by creating a new file of the same name.
+	 * @throws IOException
+	 */
+	public void PrinterRest() throws IOException{
 		printer = new PrintWriter("Race_Printout.txt");
 	}
 	/**
@@ -25,9 +35,9 @@ public class Printer {
 	 * @param includeTime self explanatory
 	 */
 	public void printThis(String time, String message, boolean includeTime) {
-		System.out.println(time + " "+message);
-		if(includeTime) printer.println(time + " " + message);
-		else printer.println(time +" " + message);
+		System.out.println(time + message);
+		if(includeTime) printer.println(time + message);
+		else printer.println(time  + message);
 		printer.flush();
 	}
 	public void shutDownPrinter() {

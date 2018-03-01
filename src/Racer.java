@@ -35,6 +35,7 @@ public class Racer {
 	 * @return a printer friendly string of the racer's time
 	 */
 	public String results() {
+		if(endTime == null || startTime == null)return "Error printing results";
 		return LocalTime.ofNanoOfDay(endTime.toNanoOfDay() - startTime.toNanoOfDay()).format(formatTime);
 	}
 

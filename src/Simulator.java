@@ -18,16 +18,16 @@ public class Simulator{
 		racerCount=1;
 		simulatorOn = true;
 		ct = new ChronoTimer();
-		chan = new Channel();
+		chan = new Channel(ct);
 		Scanner s = new Scanner(System.in);
-		System.out.println("Read file from consol or file (c/f): ");
+		System.out.println("Read file from console or file (c/f): ");
 		String input = s.nextLine();
 		if(input.equalsIgnoreCase("f")) {
 			System.out.print("Enter the file name: ");
 			String fileName = s.nextLine();
 			try(Scanner sc = new Scanner (new File(fileName))){
 				while(sc.hasNextLine() && simulatorOn){
-					generalParser(sc.nextLine().trim().split(" "));
+					generalParser(sc.nextLine().trim().split("\\s+"));
 				}
 			}
 			catch(FileNotFoundException e){
@@ -35,15 +35,18 @@ public class Simulator{
 			}
 		}
 		else if(input.equalsIgnoreCase("c")){
-			String uInput;
-			System.out.println("Start entering information, enter (Q) to quit:");
-			uInput = s.nextLine();
+			String uInput="";
+			System.out.println("ChronoTimer simulator: powering chronoTimer on.");
+			ct.power();
 			while(!uInput.equals("Q")) {
-				String consoleRead [] = new String [3];
-				consoleRead = s.nextLine().trim().split(" ");
-				generalParser(consoleRead);
+				System.out.println("Enter Full command to be sent to parser (WITH SPACES) Q to quit:");
+				String time = Time.time2formattedString(Time.getLocalTime())+ " ";
+				uInput =  s.nextLine();
+				System.out.println("Performing action on:"+ (time+uInput));
+				if(!uInput.equals("Q")) {
+					generalParser((time+uInput).trim().split("\\s+"));
+				}
 			}			
-
 		}
 		s.close();
 	}

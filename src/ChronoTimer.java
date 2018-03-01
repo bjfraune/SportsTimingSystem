@@ -24,12 +24,13 @@ public class ChronoTimer {
 		power = !power;
 		raceInSession = false;
 		print = new Printer();
-		indEvent= new IndividualEvent();
+		indEvent= new IndividualEvent(print);
 		if(!power){ 
 			raceInSession = false;
 			if(indEvent != null) {
 				print.printThis("", "POWERING OFF- PENDING ITEMS:", false);
 				printResults();
+				print.shutDownPrinter();
 			}
 			indEvent = null;
 		}
@@ -54,18 +55,17 @@ public class ChronoTimer {
 	}
 
 	public void initiateNewEvent() throws IOException {
-		indEvent = new IndividualEvent();
+		indEvent = new IndividualEvent(print);
+		print.printThis("", "Starting new IND", false);
 	}
 	public void startNewRun() {
 		if(raceInSession) {//errormessage
+			print.printThis("", "RACE ALREADY STARTED", false);
 		}
 		else {
 			raceInSession = true;
+			print.printThis("", "STARTING NEW RACE", false);
 		}
-	}
-
-	public void toggle(String name) {
-		indEvent.addRacer(name);	
 	}
 
 	public void setBib(String string, int i) {
@@ -73,9 +73,9 @@ public class ChronoTimer {
 	}
 
 	public void printResults() {
-		while(indEvent.finishers.size() >0) {
+		while(indEvent.finishers.size() > 0) {
 			Racer p = indEvent.finishers.remove();
-			print.printThis("Finished", p.bibNum+ " " + p.results(), false);
+			print.printThis("Finished", p.bibNum + " " + p.results(), false);
 		}
 		while(indEvent.inTheRace.size() >0) {
 			Racer d = indEvent.inTheRace.remove();
@@ -86,8 +86,15 @@ public class ChronoTimer {
 			print.printThis("Never Started", q.bibNum, false);
 		}
 	}
-
+	// clears the memory
+	public void reset() throws IOException {
+		print.PrinterRest();
+	}
+	public void usePrinter(String string){
+		print.printThis("", string, false);
+	}
 	public void endRun() {
 		raceInSession= false;
+		print.printThis("", "Ending current run", false);
 	}
 }

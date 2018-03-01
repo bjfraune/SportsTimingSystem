@@ -1,99 +1,93 @@
+import java.io.IOException;
 import java.time.LocalTime;
-
+/**
+ * This class handles the administrative parts of 
+ * instantiating a race. It prevents multiple races
+ * from happening simultaneously. Handles communications
+ * with the printer/results. Also acts as the connection 
+ * between channels and events.
+ * @author BS
+ *
+ */
 public class ChronoTimer {
-	
-	Time time;
-	IndividualEvent indEvent;
+
+	IndividualEvent indEvent ;
 	boolean power= false;
-	int ch1 = 1;
-	int ch2 = 2;
-	int ch3 = 3;
-	int ch4 = 4;
-
-	public void power() {
+	boolean raceInSession;
+	Printer print;
+	/**
+	 * Powers the unit on and off. When powering off 
+	 * the unit tries to printResults if there are any
+	 * @throws IOException
+	 */
+	public void power() throws IOException {
 		power = !power;
-		if(power){ 
-			LocalTime t = LocalTime.now();
-			time.setTime(t.getHour(), t.getMinute(), t.getSecond(), t.getNano());
+		raceInSession = false;
+		print = new Printer();
+		indEvent= new IndividualEvent();
+		if(!power){ 
+			raceInSession = false;
+			if(indEvent != null) {
+				print.printThis("", "POWERING OFF- PENDING ITEMS:", false);
+				printResults();
+			}
+			indEvent = null;
 		}
-		
-	}
-	
-	public void reset() {
-		//start the clock over
-		//call start again?
-	}
-	
-	public void time() {
-		
-	}
-	
-	public void dnf() {
-		
-	}
-	
-	public void cancel() {
-		
 	}
 
-	public void toggle(int channel) {
-		
-	}
-
-	public void trigger(String tokens) {
+	public void trigger(LocalTime times, String tokens) {
 		int channel = Integer.parseInt(tokens);
 		switch(tokens){
 		case "1" :
-			indEvent.trigger(channel, 1, time.getCurrentSetTime());
+			indEvent.trigger(channel, times);
 			break;
 		case "2" :
-			indEvent.trigger(channel, 1, time.getCurrentSetTime());
+			indEvent.trigger(channel, times);
 			break;
 		case "3" :
-			indEvent.trigger(channel, 2, time.getCurrentSetTime());
+			indEvent.trigger(channel, times);
 			break;
 		case "4" :
-			indEvent.trigger(channel, 2, time.getCurrentSetTime());
+			indEvent.trigger(channel, times);
 			break;
 		}
 	}
-	public void print(){
-		//TODO Process all racers and print their times
-	}
-	public void swap() {
-		//swap positions of the racers
-	}
 
-	public void keypad(int number) {
-
-	}
-	
-	public void start() {
-		//trigger on channel 1
-		//send current time to the printer
-		//print time /t trig ch#
-	}
-	
-	public void finish() {
-		//trigger on channel 2
-		//send current time to the printer
-	}
-
-	public void exit() {
-		//stop the time and exit the simulation?
-	}
-
-	public void initiateNewEvent() {
+	public void initiateNewEvent() throws IOException {
 		indEvent = new IndividualEvent();
-		
+	}
+	public void startNewRun() {
+		if(raceInSession) {//errormessage
+		}
+		else {
+			raceInSession = true;
+		}
 	}
 
 	public void toggle(String name) {
-		indEvent.addRacer(name);
-		
+		indEvent.addRacer(name);	
 	}
 
 	public void setBib(String string, int i) {
-		indEvent.participants[i].setBib(string);
+		indEvent.addRacer(string);
+	}
+
+	public void printResults() {
+		while(indEvent.finishers.size() >0) {
+			Racer p = indEvent.finishers.remove();
+			print.printThis("Finished", p.bibNum+ " " + p.results(), false);
+		}
+		while(indEvent.inTheRace.size() >0) {
+			Racer d = indEvent.inTheRace.remove();
+			print.printThis("DNF", d.bibNum, false);
+		}
+		while(indEvent.WaitingToRace.size()>0) {
+			Racer q = indEvent.WaitingToRace.remove();
+			print.printThis("Never Started", q.bibNum, false);
+		}
+	}
+
+	public void endRun() {
+		raceInSession= false;
 	}
 }

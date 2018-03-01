@@ -1,23 +1,27 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalTime;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Simulator{
 	int racerCount; 
-	Time clock;
+
 	ChronoTimer ct;
-	boolean simulatorOn = true;
-	
+	Channel chan;
+	boolean simulatorOn;
+
 	/**
 	 * Constructor
+	 * @throws IOException 
 	 */
-	public Simulator(){
+	public Simulator() throws IOException{
 		racerCount=1;
+		simulatorOn = true;
 		ct = new ChronoTimer();
+		chan = new Channel();
 		Scanner s = new Scanner(System.in);
 		System.out.println("Read file from consol or file (c/f): ");
-		String input = s.next();
+		String input = s.nextLine();
 		if(input.equalsIgnoreCase("f")) {
 			System.out.print("Enter the file name: ");
 			String fileName = s.nextLine();
@@ -33,7 +37,7 @@ public class Simulator{
 		else if(input.equalsIgnoreCase("c")){
 			String uInput;
 			System.out.println("Start entering information, enter (Q) to quit:");
-			uInput = s.next();
+			uInput = s.nextLine();
 			while(!uInput.equals("Q")) {
 				String consoleRead [] = new String [3];
 				consoleRead = s.nextLine().trim().split(" ");
@@ -43,28 +47,37 @@ public class Simulator{
 		}
 		s.close();
 	}
-
-	private void generalParser(String tokens[]) {
+	/**
+	 * parses input text file and executes commands
+	 * @param tokens
+	 * @throws IOException
+	 */
+	private void generalParser(String[] tokens) throws IOException {
 		switch(tokens[1]){
 		case "POWER":
 			ct.power();
 			break;
 		case "NEWRUN":
-			clock = new Time();
-			LocalTime t = LocalTime.now();
-			clock.setTime(t.getHour(), t.getMinute(), t.getSecond(), t.getNano());
+			ct.startNewRun();
 			break;
-		case "TOG":
-			ct.toggle(tokens[2]);
+		case "TOG" :
+			chan.Toggle(Integer.parseInt(tokens[2]));
 			break;
 		case "TRIG":
-			ct.trigger(tokens[2]);
+			String[] holder = new String[4];
+			String[] time = tokens[0].split(":");
+			holder[0] = time[0];
+			holder[1] = time[1];
+			holder[2] = time[2];
+			holder[3] = time[2].substring(3);
+			holder[2] = time[2].substring(0, 2);
+			ct.trigger(Time.string2LocalTime(holder),tokens[2]);
 			break;
 		case "PRINT":
-			//TODO
+			ct.printResults();
 			break;
 		case "ENDRUN":
-			//TODO
+			ct.endRun();
 			break;
 		case "TIME":
 			//tokens[2] to set time 
@@ -78,6 +91,12 @@ public class Simulator{
 		case "EXIT":
 			simulatorOn = false;
 			break;
+		case "CONN" :
+			chan.connectSensor(tokens[2], Integer.parseInt(tokens[3]));
 		}	
+
+	}
+	public static void main(String[] s) throws IOException {
+		new Simulator();
 	}
 }

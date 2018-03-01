@@ -1,28 +1,42 @@
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author bshepard Racers has 3 fields: name, startTime and endTime
  */
 public class Racer {
-
-	int bibNum;
+	final DateTimeFormatter formatTime=DateTimeFormatter.ofPattern("HH:mm:ss.SS");;
+	String bibNum;
 	LocalTime startTime, endTime;
-	
-	public Racer(){
+	/**
+	 * Constructs a racer
+	 * @param name
+	 */
+	public Racer(String name){
 		startTime = endTime = null;
+		bibNum = name;
 	}
-	public void setBib(String name) {
-		this.bibNum = Integer.parseInt(name);	
-	}
-
+	/**
+	 * Sets the start time for racer
+	 * @param time
+	 */
 	public void startRace(LocalTime time) {
 		startTime = time;
 	}
-
+	/**
+	 * Sets the end time for racer
+	 * @param time
+	 */
 	public void finishRace(LocalTime time) {
 		endTime = time;
 	}
-
+	/**
+	 * 
+	 * @return a printer friendly string of the racer's time
+	 */
+	public String results() {
+		return LocalTime.ofNanoOfDay(endTime.toNanoOfDay() - startTime.toNanoOfDay()).format(formatTime);
+	}
 
 
 }

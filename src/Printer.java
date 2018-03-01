@@ -18,20 +18,20 @@ public class Printer {
 	public Printer() throws IOException {
 		printer = new PrintWriter("Race_Printout.txt");
 	}
-/**
- * 
- * @param time comes in via the correct format
- * @param message - maybe the racer's name?
- * @param includeTime self explanatory
- */
+	/**
+	 * 
+	 * @param time comes in via the correct format
+	 * @param message - maybe the racer's name?
+	 * @param includeTime self explanatory
+	 */
 	public void printThis(String time, String message, boolean includeTime) {
-			System.out.println(time + " "+message);
-			if(includeTime) printer.println(time + " " + message);
-			else printer.println(time +" " + message);
-			printer.flush();
+		System.out.println(time + " "+message);
+		if(includeTime) printer.println(time + " " + message);
+		else printer.println(time +" " + message);
+		printer.flush();
 	}
 	public void shutDownPrinter() {
 		printer.close();
 	}
-	
+
 }
